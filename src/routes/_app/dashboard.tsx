@@ -104,6 +104,11 @@ function DashboardPage() {
             />
           </div>
 
+          <div className="grid gap-6 lg:grid-cols-2">
+            <ForecastCard forecast={forecast} />
+            <HealthScoreCard health={health} />
+          </div>
+
           <div className="grid gap-6 lg:grid-cols-3">
             <Card className="lg:col-span-2 border-border/60 p-6 shadow-soft">
               <div className="flex items-center justify-between">
