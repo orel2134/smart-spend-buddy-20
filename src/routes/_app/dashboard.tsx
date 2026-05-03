@@ -40,6 +40,8 @@ function DashboardPage() {
   const big = biggestCategory(current);
   const insights = generateInsights(expenses, budgets);
   const usage = budgetUsage(budgets, current);
+  const forecast = forecastMonth(expenses, budgets);
+  const health = financialHealthScore(expenses, budgets);
   const trend = dailyTrend(current).map((d) => ({ ...d, cumulative: 0 }));
   let acc = 0;
   trend.forEach((t) => { acc += t.amount; t.cumulative = acc; });
