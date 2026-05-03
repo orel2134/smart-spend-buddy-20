@@ -11,7 +11,10 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianG
 import {
   filterByMonth, filterPrevMonth, sumAmount, biggestCategory,
   monthOverMonthChange, dailyTrend, budgetUsage, generateInsights,
+  forecastMonth, financialHealthScore,
 } from "@/lib/insights";
+import { ForecastCard } from "@/components/ForecastCard";
+import { HealthScoreCard } from "@/components/HealthScoreCard";
 import { formatCurrency, formatMonth } from "@/lib/format";
 import { getCategory } from "@/lib/categories";
 import { useState } from "react";
