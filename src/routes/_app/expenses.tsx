@@ -66,6 +66,26 @@ function ExpensesPage() {
         </Button>
       </div>
 
+      {anomalies.length > 0 && (
+        <Card className="border-warning/30 bg-warning/5 p-4 shadow-soft">
+          <div className="flex items-start gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-warning/15">
+              <AlertTriangle className="h-5 w-5 text-warning" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-semibold text-sm">זיהינו חריגות מההתנהגות הרגילה שלך</div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {anomalies.slice(0, 5).map((a) => (
+                  <Badge key={a.category} variant="outline" className="border-warning/40 bg-card">
+                    {a.label}: <span className="font-bold mx-1 text-warning">+{a.delta}%</span> מהממוצע
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
       <Card className="border-border/60 p-4 shadow-soft">
         <div className="flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-[200px]">
