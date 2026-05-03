@@ -11,7 +11,10 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianG
 import {
   filterByMonth, filterPrevMonth, sumAmount, biggestCategory,
   monthOverMonthChange, dailyTrend, budgetUsage, generateInsights,
+  forecastMonth, financialHealthScore,
 } from "@/lib/insights";
+import { ForecastCard } from "@/components/ForecastCard";
+import { HealthScoreCard } from "@/components/HealthScoreCard";
 import { formatCurrency, formatMonth } from "@/lib/format";
 import { getCategory } from "@/lib/categories";
 import { useState } from "react";
@@ -37,6 +40,8 @@ function DashboardPage() {
   const big = biggestCategory(current);
   const insights = generateInsights(expenses, budgets);
   const usage = budgetUsage(budgets, current);
+  const forecast = forecastMonth(expenses, budgets);
+  const health = financialHealthScore(expenses, budgets);
   const trend = dailyTrend(current).map((d) => ({ ...d, cumulative: 0 }));
   let acc = 0;
   trend.forEach((t) => { acc += t.amount; t.cumulative = acc; });
@@ -97,6 +102,11 @@ function DashboardPage() {
               icon={AlertCircle}
               iconBg={insights.some((i) => i.severity === "critical") ? "bg-destructive" : "bg-gradient-primary"}
             />
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <ForecastCard forecast={forecast} />
+            <HealthScoreCard health={health} />
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">

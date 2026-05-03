@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Search, Receipt } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Receipt, AlertTriangle, Flame } from "lucide-react";
 import { CATEGORIES, getCategory, getPaymentLabel } from "@/lib/categories";
+import { categoryAnomalies, expenseOutliers } from "@/lib/insights";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { ExpenseDialog } from "@/components/ExpenseDialog";
 import { EmptyState } from "@/components/EmptyState";
@@ -40,6 +41,10 @@ function ExpensesPage() {
     });
   }, [expenses, search, catFilter]);
 
+  const anomalies = useMemo(() => categoryAnomalies(expenses), [expenses]);
+  const outliers = useMemo(() => expenseOutliers(expenses), [expenses]);
+  const outlierIds = useMemo(() => new Set(outliers.map((o) => o.expense.id)), [outliers]);
+
   const handleDelete = async () => {
     if (!deleteId) return;
     const { error } = await supabase.from("expenses").delete().eq("id", deleteId);
@@ -60,6 +65,26 @@ function ExpensesPage() {
           <Plus className="h-4 w-4" /> הוצאה חדשה
         </Button>
       </div>
+
+      {anomalies.length > 0 && (
+        <Card className="border-warning/30 bg-warning/5 p-4 shadow-soft">
+          <div className="flex items-start gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-warning/15">
+              <AlertTriangle className="h-5 w-5 text-warning" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-semibold text-sm">זיהינו חריגות מההתנהגות הרגילה שלך</div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {anomalies.slice(0, 5).map((a) => (
+                  <Badge key={a.category} variant="outline" className="border-warning/40 bg-card">
+                    {a.label}: <span className="font-bold mx-1 text-warning">+{a.delta}%</span> מהממוצע
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Card className="border-border/60 p-4 shadow-soft">
         <div className="flex flex-wrap gap-3">
@@ -105,7 +130,16 @@ function ExpensesPage() {
                 const Icon = cat.icon;
                 return (
                   <TableRow key={e.id}>
-                    <TableCell className="font-medium">{e.description || "—"}</TableCell>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {e.description || "—"}
+                        {outlierIds.has(e.id) && (
+                          <span title="הוצאה חריגה ביחס להרגל שלך">
+                            <Flame className="h-3.5 w-3.5 text-warning" />
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="gap-1.5">
                         <Icon className="h-3 w-3" style={{ color: cat.color }} />

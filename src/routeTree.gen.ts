@@ -13,12 +13,15 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSimulatorRouteImport } from './routes/_app/simulator'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppPricingRouteImport } from './routes/_app/pricing'
 import { Route as AppNotificationsRouteImport } from './routes/_app/notifications'
 import { Route as AppInsightsRouteImport } from './routes/_app/insights'
 import { Route as AppExpensesRouteImport } from './routes/_app/expenses'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppCoachRouteImport } from './routes/_app/coach'
+import { Route as AppChallengesRouteImport } from './routes/_app/challenges'
 import { Route as AppBudgetRouteImport } from './routes/_app/budget'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
 
@@ -40,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppSimulatorRoute = AppSimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
@@ -71,6 +79,16 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCoachRoute = AppCoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChallengesRoute = AppChallengesRouteImport.update({
+  id: '/challenges',
+  path: '/challenges',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppBudgetRoute = AppBudgetRouteImport.update({
   id: '/budget',
   path: '/budget',
@@ -88,12 +106,15 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/analytics': typeof AppAnalyticsRoute
   '/budget': typeof AppBudgetRoute
+  '/challenges': typeof AppChallengesRoute
+  '/coach': typeof AppCoachRoute
   '/dashboard': typeof AppDashboardRoute
   '/expenses': typeof AppExpensesRoute
   '/insights': typeof AppInsightsRoute
   '/notifications': typeof AppNotificationsRoute
   '/pricing': typeof AppPricingRoute
   '/settings': typeof AppSettingsRoute
+  '/simulator': typeof AppSimulatorRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -101,12 +122,15 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/analytics': typeof AppAnalyticsRoute
   '/budget': typeof AppBudgetRoute
+  '/challenges': typeof AppChallengesRoute
+  '/coach': typeof AppCoachRoute
   '/dashboard': typeof AppDashboardRoute
   '/expenses': typeof AppExpensesRoute
   '/insights': typeof AppInsightsRoute
   '/notifications': typeof AppNotificationsRoute
   '/pricing': typeof AppPricingRoute
   '/settings': typeof AppSettingsRoute
+  '/simulator': typeof AppSimulatorRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,12 +140,15 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/budget': typeof AppBudgetRoute
+  '/_app/challenges': typeof AppChallengesRoute
+  '/_app/coach': typeof AppCoachRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/expenses': typeof AppExpensesRoute
   '/_app/insights': typeof AppInsightsRoute
   '/_app/notifications': typeof AppNotificationsRoute
   '/_app/pricing': typeof AppPricingRoute
   '/_app/settings': typeof AppSettingsRoute
+  '/_app/simulator': typeof AppSimulatorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,12 +158,15 @@ export interface FileRouteTypes {
     | '/register'
     | '/analytics'
     | '/budget'
+    | '/challenges'
+    | '/coach'
     | '/dashboard'
     | '/expenses'
     | '/insights'
     | '/notifications'
     | '/pricing'
     | '/settings'
+    | '/simulator'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,12 +174,15 @@ export interface FileRouteTypes {
     | '/register'
     | '/analytics'
     | '/budget'
+    | '/challenges'
+    | '/coach'
     | '/dashboard'
     | '/expenses'
     | '/insights'
     | '/notifications'
     | '/pricing'
     | '/settings'
+    | '/simulator'
   id:
     | '__root__'
     | '/'
@@ -158,12 +191,15 @@ export interface FileRouteTypes {
     | '/register'
     | '/_app/analytics'
     | '/_app/budget'
+    | '/_app/challenges'
+    | '/_app/coach'
     | '/_app/dashboard'
     | '/_app/expenses'
     | '/_app/insights'
     | '/_app/notifications'
     | '/_app/pricing'
     | '/_app/settings'
+    | '/_app/simulator'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -202,6 +238,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/simulator': {
+      id: '/_app/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof AppSimulatorRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/settings': {
       id: '/_app/settings'
@@ -245,6 +288,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/coach': {
+      id: '/_app/coach'
+      path: '/coach'
+      fullPath: '/coach'
+      preLoaderRoute: typeof AppCoachRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/challenges': {
+      id: '/_app/challenges'
+      path: '/challenges'
+      fullPath: '/challenges'
+      preLoaderRoute: typeof AppChallengesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/budget': {
       id: '/_app/budget'
       path: '/budget'
@@ -265,23 +322,29 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppBudgetRoute: typeof AppBudgetRoute
+  AppChallengesRoute: typeof AppChallengesRoute
+  AppCoachRoute: typeof AppCoachRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppExpensesRoute: typeof AppExpensesRoute
   AppInsightsRoute: typeof AppInsightsRoute
   AppNotificationsRoute: typeof AppNotificationsRoute
   AppPricingRoute: typeof AppPricingRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  AppSimulatorRoute: typeof AppSimulatorRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppBudgetRoute: AppBudgetRoute,
+  AppChallengesRoute: AppChallengesRoute,
+  AppCoachRoute: AppCoachRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppExpensesRoute: AppExpensesRoute,
   AppInsightsRoute: AppInsightsRoute,
   AppNotificationsRoute: AppNotificationsRoute,
   AppPricingRoute: AppPricingRoute,
   AppSettingsRoute: AppSettingsRoute,
+  AppSimulatorRoute: AppSimulatorRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
