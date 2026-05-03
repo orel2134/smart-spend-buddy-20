@@ -130,7 +130,16 @@ function ExpensesPage() {
                 const Icon = cat.icon;
                 return (
                   <TableRow key={e.id}>
-                    <TableCell className="font-medium">{e.description || "—"}</TableCell>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {e.description || "—"}
+                        {outlierIds.has(e.id) && (
+                          <span title="הוצאה חריגה ביחס להרגל שלך">
+                            <Flame className="h-3.5 w-3.5 text-warning" />
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="gap-1.5">
                         <Icon className="h-3 w-3" style={{ color: cat.color }} />
