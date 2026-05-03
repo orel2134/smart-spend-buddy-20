@@ -1,6 +1,6 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
-import { LayoutDashboard, Receipt, Target, Lightbulb, BarChart3, Bell, Settings, CreditCard, Wallet, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Receipt, Target, Lightbulb, BarChart3, Bell, Settings, CreditCard, Wallet, LogOut, Menu, X, Sparkles, Calculator, Trophy } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,9 @@ const NAV = [
   { to: "/dashboard", label: "דשבורד", icon: LayoutDashboard },
   { to: "/expenses", label: "הוצאות", icon: Receipt },
   { to: "/budget", label: "תקציב", icon: Target },
+  { to: "/coach", label: "מאמן AI", icon: Sparkles },
+  { to: "/simulator", label: "סימולטור", icon: Calculator },
+  { to: "/challenges", label: "אתגרים", icon: Trophy },
   { to: "/insights", label: "תובנות", icon: Lightbulb },
   { to: "/analytics", label: "ניתוחים", icon: BarChart3 },
   { to: "/notifications", label: "התראות", icon: Bell },
