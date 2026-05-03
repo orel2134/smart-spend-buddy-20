@@ -41,6 +41,10 @@ function ExpensesPage() {
     });
   }, [expenses, search, catFilter]);
 
+  const anomalies = useMemo(() => categoryAnomalies(expenses), [expenses]);
+  const outliers = useMemo(() => expenseOutliers(expenses), [expenses]);
+  const outlierIds = useMemo(() => new Set(outliers.map((o) => o.expense.id)), [outliers]);
+
   const handleDelete = async () => {
     if (!deleteId) return;
     const { error } = await supabase.from("expenses").delete().eq("id", deleteId);
