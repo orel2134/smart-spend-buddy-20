@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.is_advisor_of(uuid, uuid) FROM PUBLIC, anon, authenticated;
