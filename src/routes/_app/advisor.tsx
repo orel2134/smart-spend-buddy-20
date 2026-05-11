@@ -38,10 +38,10 @@ function AdvisorDashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="סך הלקוחות" value={String(totalClients)} icon={Users} subtitle="מחוברים פעילים" />
-        <StatCard label="לקוחות בסיכון" value={String(atRisk)} icon={AlertTriangle} subtitle={critical > 0 ? `${critical} בחריגה` : "מעקב נדרש"} tone={atRisk > 0 ? "warning" : "default"} />
-        <StatCard label="ניצול תקציב ממוצע" value={`${avgUsage}%`} icon={Target} subtitle="ממוצע על פני הלקוחות" />
-        <StatCard label="המלצות ממתינות" value="3" icon={MessageSquare} subtitle="לשלוח השבוע" />
+        <StatCard label="סך הלקוחות" value={String(totalClients)} icon={Users} trend="מחוברים פעילים" />
+        <StatCard label="לקוחות בסיכון" value={String(atRisk)} icon={AlertTriangle} trend={critical > 0 ? `${critical} בחריגה` : "מעקב נדרש"} trendType={atRisk > 0 ? "warn" : "neutral"} />
+        <StatCard label="ניצול תקציב ממוצע" value={`${avgUsage}%`} icon={Target} trend="ממוצע על פני הלקוחות" />
+        <StatCard label="המלצות ממתינות" value="3" icon={MessageSquare} trend="לשלוח השבוע" />
       </div>
 
       {/* Risk radar */}
