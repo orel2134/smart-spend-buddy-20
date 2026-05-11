@@ -24,6 +24,7 @@ import { Route as AppCoachRouteImport } from './routes/_app/coach'
 import { Route as AppChallengesRouteImport } from './routes/_app/challenges'
 import { Route as AppBudgetRouteImport } from './routes/_app/budget'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppAdvisorRouteImport } from './routes/_app/advisor'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -99,11 +100,17 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdvisorRoute = AppAdvisorRouteImport.update({
+  id: '/advisor',
+  path: '/advisor',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/advisor': typeof AppAdvisorRoute
   '/analytics': typeof AppAnalyticsRoute
   '/budget': typeof AppBudgetRoute
   '/challenges': typeof AppChallengesRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/advisor': typeof AppAdvisorRoute
   '/analytics': typeof AppAnalyticsRoute
   '/budget': typeof AppBudgetRoute
   '/challenges': typeof AppChallengesRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_app/advisor': typeof AppAdvisorRoute
   '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/budget': typeof AppBudgetRoute
   '/_app/challenges': typeof AppChallengesRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/advisor'
     | '/analytics'
     | '/budget'
     | '/challenges'
@@ -172,6 +182,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/advisor'
     | '/analytics'
     | '/budget'
     | '/challenges'
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/login'
     | '/register'
+    | '/_app/advisor'
     | '/_app/analytics'
     | '/_app/budget'
     | '/_app/challenges'
@@ -316,10 +328,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/advisor': {
+      id: '/_app/advisor'
+      path: '/advisor'
+      fullPath: '/advisor'
+      preLoaderRoute: typeof AppAdvisorRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAdvisorRoute: typeof AppAdvisorRoute
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppBudgetRoute: typeof AppBudgetRoute
   AppChallengesRoute: typeof AppChallengesRoute
@@ -334,6 +354,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdvisorRoute: AppAdvisorRoute,
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppBudgetRoute: AppBudgetRoute,
   AppChallengesRoute: AppChallengesRoute,
