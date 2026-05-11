@@ -33,14 +33,21 @@ function LoginPage() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword(result.data);
-    setLoading(false);
+    const { data, error } = await supabase.auth.signInWithPassword(result.data);
     if (error) {
+      setLoading(false);
       toast.error("שגיאת התחברות", { description: "אימייל או סיסמה שגויים" });
       return;
     }
+    // route by role
+    let target: "/advisor" | "/dashboard" = "/dashboard";
+    if (data.user) {
+      const { data: prof } = await supabase.from("profiles").select("role").eq("id", data.user.id).maybeSingle();
+      if (prof?.role === "advisor") target = "/advisor";
+    }
+    setLoading(false);
     toast.success("ברוך הבא!");
-    navigate({ to: "/dashboard" });
+    navigate({ to: target });
   };
 
   return (
