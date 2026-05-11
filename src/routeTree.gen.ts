@@ -15,6 +15,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppSimulatorRouteImport } from './routes/_app/simulator'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppRecommendationsRouteImport } from './routes/_app/recommendations'
 import { Route as AppPricingRouteImport } from './routes/_app/pricing'
 import { Route as AppNotificationsRouteImport } from './routes/_app/notifications'
 import { Route as AppInsightsRouteImport } from './routes/_app/insights'
@@ -24,6 +25,13 @@ import { Route as AppCoachRouteImport } from './routes/_app/coach'
 import { Route as AppChallengesRouteImport } from './routes/_app/challenges'
 import { Route as AppBudgetRouteImport } from './routes/_app/budget'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppAdvisorRouteImport } from './routes/_app/advisor'
+import { Route as AppAdvisorRiskRadarRouteImport } from './routes/_app/advisor.risk-radar'
+import { Route as AppAdvisorReportsRouteImport } from './routes/_app/advisor.reports'
+import { Route as AppAdvisorRecommendationsRouteImport } from './routes/_app/advisor.recommendations'
+import { Route as AppAdvisorInvitationsRouteImport } from './routes/_app/advisor.invitations'
+import { Route as AppAdvisorClientsRouteImport } from './routes/_app/advisor.clients'
+import { Route as AppAdvisorClientIdRouteImport } from './routes/_app/advisor.client.$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -52,6 +60,11 @@ const AppSimulatorRoute = AppSimulatorRouteImport.update({
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRecommendationsRoute = AppRecommendationsRouteImport.update({
+  id: '/recommendations',
+  path: '/recommendations',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPricingRoute = AppPricingRouteImport.update({
@@ -99,11 +112,48 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdvisorRoute = AppAdvisorRouteImport.update({
+  id: '/advisor',
+  path: '/advisor',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdvisorRiskRadarRoute = AppAdvisorRiskRadarRouteImport.update({
+  id: '/risk-radar',
+  path: '/risk-radar',
+  getParentRoute: () => AppAdvisorRoute,
+} as any)
+const AppAdvisorReportsRoute = AppAdvisorReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppAdvisorRoute,
+} as any)
+const AppAdvisorRecommendationsRoute =
+  AppAdvisorRecommendationsRouteImport.update({
+    id: '/recommendations',
+    path: '/recommendations',
+    getParentRoute: () => AppAdvisorRoute,
+  } as any)
+const AppAdvisorInvitationsRoute = AppAdvisorInvitationsRouteImport.update({
+  id: '/invitations',
+  path: '/invitations',
+  getParentRoute: () => AppAdvisorRoute,
+} as any)
+const AppAdvisorClientsRoute = AppAdvisorClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => AppAdvisorRoute,
+} as any)
+const AppAdvisorClientIdRoute = AppAdvisorClientIdRouteImport.update({
+  id: '/client/$id',
+  path: '/client/$id',
+  getParentRoute: () => AppAdvisorRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/advisor': typeof AppAdvisorRouteWithChildren
   '/analytics': typeof AppAnalyticsRoute
   '/budget': typeof AppBudgetRoute
   '/challenges': typeof AppChallengesRoute
@@ -113,13 +163,21 @@ export interface FileRoutesByFullPath {
   '/insights': typeof AppInsightsRoute
   '/notifications': typeof AppNotificationsRoute
   '/pricing': typeof AppPricingRoute
+  '/recommendations': typeof AppRecommendationsRoute
   '/settings': typeof AppSettingsRoute
   '/simulator': typeof AppSimulatorRoute
+  '/advisor/clients': typeof AppAdvisorClientsRoute
+  '/advisor/invitations': typeof AppAdvisorInvitationsRoute
+  '/advisor/recommendations': typeof AppAdvisorRecommendationsRoute
+  '/advisor/reports': typeof AppAdvisorReportsRoute
+  '/advisor/risk-radar': typeof AppAdvisorRiskRadarRoute
+  '/advisor/client/$id': typeof AppAdvisorClientIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/advisor': typeof AppAdvisorRouteWithChildren
   '/analytics': typeof AppAnalyticsRoute
   '/budget': typeof AppBudgetRoute
   '/challenges': typeof AppChallengesRoute
@@ -129,8 +187,15 @@ export interface FileRoutesByTo {
   '/insights': typeof AppInsightsRoute
   '/notifications': typeof AppNotificationsRoute
   '/pricing': typeof AppPricingRoute
+  '/recommendations': typeof AppRecommendationsRoute
   '/settings': typeof AppSettingsRoute
   '/simulator': typeof AppSimulatorRoute
+  '/advisor/clients': typeof AppAdvisorClientsRoute
+  '/advisor/invitations': typeof AppAdvisorInvitationsRoute
+  '/advisor/recommendations': typeof AppAdvisorRecommendationsRoute
+  '/advisor/reports': typeof AppAdvisorReportsRoute
+  '/advisor/risk-radar': typeof AppAdvisorRiskRadarRoute
+  '/advisor/client/$id': typeof AppAdvisorClientIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -138,6 +203,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/_app/advisor': typeof AppAdvisorRouteWithChildren
   '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/budget': typeof AppBudgetRoute
   '/_app/challenges': typeof AppChallengesRoute
@@ -147,8 +213,15 @@ export interface FileRoutesById {
   '/_app/insights': typeof AppInsightsRoute
   '/_app/notifications': typeof AppNotificationsRoute
   '/_app/pricing': typeof AppPricingRoute
+  '/_app/recommendations': typeof AppRecommendationsRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/simulator': typeof AppSimulatorRoute
+  '/_app/advisor/clients': typeof AppAdvisorClientsRoute
+  '/_app/advisor/invitations': typeof AppAdvisorInvitationsRoute
+  '/_app/advisor/recommendations': typeof AppAdvisorRecommendationsRoute
+  '/_app/advisor/reports': typeof AppAdvisorReportsRoute
+  '/_app/advisor/risk-radar': typeof AppAdvisorRiskRadarRoute
+  '/_app/advisor/client/$id': typeof AppAdvisorClientIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -156,6 +229,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/advisor'
     | '/analytics'
     | '/budget'
     | '/challenges'
@@ -165,13 +239,21 @@ export interface FileRouteTypes {
     | '/insights'
     | '/notifications'
     | '/pricing'
+    | '/recommendations'
     | '/settings'
     | '/simulator'
+    | '/advisor/clients'
+    | '/advisor/invitations'
+    | '/advisor/recommendations'
+    | '/advisor/reports'
+    | '/advisor/risk-radar'
+    | '/advisor/client/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
+    | '/advisor'
     | '/analytics'
     | '/budget'
     | '/challenges'
@@ -181,14 +263,22 @@ export interface FileRouteTypes {
     | '/insights'
     | '/notifications'
     | '/pricing'
+    | '/recommendations'
     | '/settings'
     | '/simulator'
+    | '/advisor/clients'
+    | '/advisor/invitations'
+    | '/advisor/recommendations'
+    | '/advisor/reports'
+    | '/advisor/risk-radar'
+    | '/advisor/client/$id'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/login'
     | '/register'
+    | '/_app/advisor'
     | '/_app/analytics'
     | '/_app/budget'
     | '/_app/challenges'
@@ -198,8 +288,15 @@ export interface FileRouteTypes {
     | '/_app/insights'
     | '/_app/notifications'
     | '/_app/pricing'
+    | '/_app/recommendations'
     | '/_app/settings'
     | '/_app/simulator'
+    | '/_app/advisor/clients'
+    | '/_app/advisor/invitations'
+    | '/_app/advisor/recommendations'
+    | '/_app/advisor/reports'
+    | '/_app/advisor/risk-radar'
+    | '/_app/advisor/client/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -251,6 +348,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/recommendations': {
+      id: '/_app/recommendations'
+      path: '/recommendations'
+      fullPath: '/recommendations'
+      preLoaderRoute: typeof AppRecommendationsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/pricing': {
@@ -316,10 +420,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/advisor': {
+      id: '/_app/advisor'
+      path: '/advisor'
+      fullPath: '/advisor'
+      preLoaderRoute: typeof AppAdvisorRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/advisor/risk-radar': {
+      id: '/_app/advisor/risk-radar'
+      path: '/risk-radar'
+      fullPath: '/advisor/risk-radar'
+      preLoaderRoute: typeof AppAdvisorRiskRadarRouteImport
+      parentRoute: typeof AppAdvisorRoute
+    }
+    '/_app/advisor/reports': {
+      id: '/_app/advisor/reports'
+      path: '/reports'
+      fullPath: '/advisor/reports'
+      preLoaderRoute: typeof AppAdvisorReportsRouteImport
+      parentRoute: typeof AppAdvisorRoute
+    }
+    '/_app/advisor/recommendations': {
+      id: '/_app/advisor/recommendations'
+      path: '/recommendations'
+      fullPath: '/advisor/recommendations'
+      preLoaderRoute: typeof AppAdvisorRecommendationsRouteImport
+      parentRoute: typeof AppAdvisorRoute
+    }
+    '/_app/advisor/invitations': {
+      id: '/_app/advisor/invitations'
+      path: '/invitations'
+      fullPath: '/advisor/invitations'
+      preLoaderRoute: typeof AppAdvisorInvitationsRouteImport
+      parentRoute: typeof AppAdvisorRoute
+    }
+    '/_app/advisor/clients': {
+      id: '/_app/advisor/clients'
+      path: '/clients'
+      fullPath: '/advisor/clients'
+      preLoaderRoute: typeof AppAdvisorClientsRouteImport
+      parentRoute: typeof AppAdvisorRoute
+    }
+    '/_app/advisor/client/$id': {
+      id: '/_app/advisor/client/$id'
+      path: '/client/$id'
+      fullPath: '/advisor/client/$id'
+      preLoaderRoute: typeof AppAdvisorClientIdRouteImport
+      parentRoute: typeof AppAdvisorRoute
+    }
   }
 }
 
+interface AppAdvisorRouteChildren {
+  AppAdvisorClientsRoute: typeof AppAdvisorClientsRoute
+  AppAdvisorInvitationsRoute: typeof AppAdvisorInvitationsRoute
+  AppAdvisorRecommendationsRoute: typeof AppAdvisorRecommendationsRoute
+  AppAdvisorReportsRoute: typeof AppAdvisorReportsRoute
+  AppAdvisorRiskRadarRoute: typeof AppAdvisorRiskRadarRoute
+  AppAdvisorClientIdRoute: typeof AppAdvisorClientIdRoute
+}
+
+const AppAdvisorRouteChildren: AppAdvisorRouteChildren = {
+  AppAdvisorClientsRoute: AppAdvisorClientsRoute,
+  AppAdvisorInvitationsRoute: AppAdvisorInvitationsRoute,
+  AppAdvisorRecommendationsRoute: AppAdvisorRecommendationsRoute,
+  AppAdvisorReportsRoute: AppAdvisorReportsRoute,
+  AppAdvisorRiskRadarRoute: AppAdvisorRiskRadarRoute,
+  AppAdvisorClientIdRoute: AppAdvisorClientIdRoute,
+}
+
+const AppAdvisorRouteWithChildren = AppAdvisorRoute._addFileChildren(
+  AppAdvisorRouteChildren,
+)
+
 interface AppRouteChildren {
+  AppAdvisorRoute: typeof AppAdvisorRouteWithChildren
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppBudgetRoute: typeof AppBudgetRoute
   AppChallengesRoute: typeof AppChallengesRoute
@@ -329,11 +505,13 @@ interface AppRouteChildren {
   AppInsightsRoute: typeof AppInsightsRoute
   AppNotificationsRoute: typeof AppNotificationsRoute
   AppPricingRoute: typeof AppPricingRoute
+  AppRecommendationsRoute: typeof AppRecommendationsRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppSimulatorRoute: typeof AppSimulatorRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdvisorRoute: AppAdvisorRouteWithChildren,
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppBudgetRoute: AppBudgetRoute,
   AppChallengesRoute: AppChallengesRoute,
@@ -343,6 +521,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppInsightsRoute: AppInsightsRoute,
   AppNotificationsRoute: AppNotificationsRoute,
   AppPricingRoute: AppPricingRoute,
+  AppRecommendationsRoute: AppRecommendationsRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppSimulatorRoute: AppSimulatorRoute,
 }
@@ -358,12 +537,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

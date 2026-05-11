@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      advisor_clients: {
+        Row: {
+          advisor_id: string
+          client_id: string
+          connected_at: string
+          id: string
+          permission_level: string
+          status: string
+        }
+        Insert: {
+          advisor_id: string
+          client_id: string
+          connected_at?: string
+          id?: string
+          permission_level?: string
+          status?: string
+        }
+        Update: {
+          advisor_id?: string
+          client_id?: string
+          connected_at?: string
+          id?: string
+          permission_level?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      advisor_notes: {
+        Row: {
+          advisor_id: string
+          client_id: string
+          created_at: string
+          id: string
+          note_text: string
+        }
+        Insert: {
+          advisor_id: string
+          client_id: string
+          created_at?: string
+          id?: string
+          note_text: string
+        }
+        Update: {
+          advisor_id?: string
+          client_id?: string
+          created_at?: string
+          id?: string
+          note_text?: string
+        }
+        Relationships: []
+      }
       budgets: {
         Row: {
           amount: number
@@ -41,6 +92,36 @@ export type Database = {
           period?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      client_invitations: {
+        Row: {
+          advisor_id: string
+          client_email: string
+          client_name: string | null
+          created_at: string
+          id: string
+          message: string | null
+          status: string
+        }
+        Insert: {
+          advisor_id: string
+          client_email: string
+          client_name?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          status?: string
+        }
+        Update: {
+          advisor_id?: string
+          client_email?: string
+          client_name?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          status?: string
         }
         Relationships: []
       }
@@ -112,39 +193,96 @@ export type Database = {
       }
       profiles: {
         Row: {
+          business_name: string | null
           created_at: string
           email: string | null
+          expected_clients: number | null
           full_name: string | null
           id: string
           is_premium: boolean
+          monthly_budget: number | null
           notifications_enabled: boolean
+          phone: string | null
           preferred_currency: string
+          role: Database["public"]["Enums"]["user_role"]
+          role_title: string | null
           theme: string
           trial_started_at: string
           updated_at: string
         }
         Insert: {
+          business_name?: string | null
           created_at?: string
           email?: string | null
+          expected_clients?: number | null
           full_name?: string | null
           id: string
           is_premium?: boolean
+          monthly_budget?: number | null
           notifications_enabled?: boolean
+          phone?: string | null
           preferred_currency?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          role_title?: string | null
           theme?: string
           trial_started_at?: string
           updated_at?: string
         }
         Update: {
+          business_name?: string | null
           created_at?: string
           email?: string | null
+          expected_clients?: number | null
           full_name?: string | null
           id?: string
           is_premium?: boolean
+          monthly_budget?: number | null
           notifications_enabled?: boolean
+          phone?: string | null
           preferred_currency?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          role_title?: string | null
           theme?: string
           trial_started_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      recommendations: {
+        Row: {
+          advisor_id: string
+          category: string | null
+          client_id: string
+          created_at: string
+          id: string
+          message: string
+          priority: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          advisor_id: string
+          category?: string | null
+          client_id: string
+          created_at?: string
+          id?: string
+          message: string
+          priority?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          advisor_id?: string
+          category?: string | null
+          client_id?: string
+          created_at?: string
+          id?: string
+          message?: string
+          priority?: string
+          status?: string
+          title?: string
           updated_at?: string
         }
         Relationships: []
@@ -154,10 +292,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_advisor_of: {
+        Args: { _advisor: string; _client: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "personal" | "advisor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -284,6 +425,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["personal", "advisor"],
+    },
   },
 } as const

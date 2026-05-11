@@ -21,10 +21,12 @@ export const Route = createFileRoute("/_app/coach")({
 type Msg = { role: "user" | "assistant"; content: string };
 
 const SUGGESTIONS = [
-  "איך אני יכול לחסוך יותר החודש?",
-  "איפה אני מבזבז יותר מדי?",
-  "מה התחזית לסוף החודש?",
-  "תן לי 3 טיפים לשיפור הציון הפיננסי שלי",
+  "נתח לי את החודש",
+  "מצא את הבעיה הכי גדולה שלי",
+  "בנה לי תוכנית חיסכון",
+  "הסבר לי את ההתראות",
+  "איך לשפר את הציון הפיננסי שלי?",
+  "מה תחזית סוף החודש?",
 ];
 
 function buildContext(data: ReturnType<typeof useExpenses>): string {
