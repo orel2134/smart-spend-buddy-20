@@ -4,11 +4,12 @@ import ReactMarkdown from "react-markdown";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Send, Bot, User as UserIcon } from "lucide-react";
+import { Sparkles, Send, Bot, User as UserIcon, AlertTriangle, TrendingUp, Target, CheckCircle2 } from "lucide-react";
 import { useExpenses } from "@/hooks/useExpenses";
 import {
   filterByMonth, filterPrevMonth, sumAmount, byCategory,
   forecastMonth, financialHealthScore, categoryAnomalies, budgetUsage,
+  monthOverMonthChange, biggestCategory,
 } from "@/lib/insights";
 import { formatCurrency } from "@/lib/format";
 import { toast } from "sonner";
