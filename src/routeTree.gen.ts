@@ -31,7 +31,7 @@ import { Route as AppAdvisorReportsRouteImport } from './routes/_app/advisor.rep
 import { Route as AppAdvisorRecommendationsRouteImport } from './routes/_app/advisor.recommendations'
 import { Route as AppAdvisorInvitationsRouteImport } from './routes/_app/advisor.invitations'
 import { Route as AppAdvisorClientsRouteImport } from './routes/_app/advisor.clients'
-import { Route as AppAdvisorClientIdRouteImport } from './routes/_app/advisor.client.$id'
+import { Route as AppAdvisorClientIdRouteImport } from './routes/_app/advisor/client.$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -537,3 +537,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
