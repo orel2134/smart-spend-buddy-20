@@ -31,7 +31,7 @@ import { Route as AppAdvisorReportsRouteImport } from './routes/_app/advisor.rep
 import { Route as AppAdvisorRecommendationsRouteImport } from './routes/_app/advisor.recommendations'
 import { Route as AppAdvisorInvitationsRouteImport } from './routes/_app/advisor.invitations'
 import { Route as AppAdvisorClientsRouteImport } from './routes/_app/advisor.clients'
-import { Route as AppAdvisorClientIdRouteImport } from './routes/_app/advisor.client.$id'
+import { Route as AppAdvisorClientIdRouteImport } from './routes/_app/advisor/client.$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
