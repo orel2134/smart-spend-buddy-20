@@ -267,10 +267,7 @@ function CoachPage() {
         </Card>
       </div>
 
-          <h1 className="text-3xl font-bold tracking-tight">מאמן פיננסי AI</h1>
-          <p className="mt-1 text-sm text-muted-foreground">שאל כל שאלה — אני רואה את הנתונים שלך בזמן אמת.</p>
-        </div>
-      </div>
+
 
       <Card className="border-border/60 shadow-soft overflow-hidden">
         <div ref={scrollRef} className="h-[28rem] overflow-y-auto p-5 space-y-4 bg-gradient-to-b from-background to-muted/20">
