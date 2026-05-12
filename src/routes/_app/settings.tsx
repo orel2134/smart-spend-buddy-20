@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { CATEGORIES } from "@/lib/categories";
-import { Sparkles, Database } from "lucide-react";
+import { Sparkles, Database, UserPlus } from "lucide-react";
 
 export const Route = createFileRoute("/_app/settings")({
   head: () => ({ meta: [{ title: "הגדרות — SmartSpend" }] }),
@@ -25,6 +25,10 @@ function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
+  const [advisorEmail, setAdvisorEmail] = useState("");
+  const [permission, setPermission] = useState("view_recommendations");
+  const [connecting, setConnecting] = useState(false);
+  const [role, setRole] = useState<string>("personal");
 
   useEffect(() => {
     (async () => {
@@ -34,6 +38,7 @@ function SettingsPage() {
         setFullName(data.full_name ?? "");
         setCurrency(data.preferred_currency ?? "₪");
         setNotifications(data.notifications_enabled ?? true);
+        setRole(data.role ?? "personal");
       }
       setLoading(false);
     })();
@@ -182,6 +187,59 @@ function SettingsPage() {
           </div>
         </div>
       </Card>
+
+      {role !== "advisor" && (
+        <Card className="border-border/60 p-6 shadow-soft">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-success shadow-glow">
+              <UserPlus className="h-6 w-6 text-success-foreground" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold">חיבור ליועץ פיננסי</h3>
+              <p className="mt-1 text-sm text-muted-foreground">ניתן לחבר יועץ פיננסי כדי לקבל המלצות אישיות על בסיס נתוני ההוצאות והתקציב שלך.</p>
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="advisorEmail">אימייל של היועץ</Label>
+                  <Input id="advisorEmail" type="email" value={advisorEmail} onChange={(e) => setAdvisorEmail(e.target.value)} placeholder="advisor@example.com" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>רמת הרשאה</Label>
+                  <Select value={permission} onValueChange={setPermission}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="view_only">צפייה בלבד</SelectItem>
+                      <SelectItem value="view_recommendations">צפייה + שליחת המלצות</SelectItem>
+                      <SelectItem value="full_access">גישה מלאה לייעוץ</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <Button
+                onClick={async () => {
+                  if (!user || !advisorEmail) return toast.error("הזן אימייל של יועץ");
+                  setConnecting(true);
+                  const { data: adv } = await supabase.from("profiles").select("id, role").eq("email", advisorEmail).maybeSingle();
+                  if (!adv || adv.role !== "advisor") {
+                    setConnecting(false);
+                    return toast.error("לא נמצא יועץ עם האימייל הזה");
+                  }
+                  const { error } = await supabase.from("advisor_clients").insert({
+                    advisor_id: adv.id, client_id: user.id, permission_level: permission, status: "active",
+                  });
+                  setConnecting(false);
+                  if (error) return toast.error("החיבור נכשל", { description: error.message });
+                  toast.success("היועץ חובר בהצלחה");
+                  setAdvisorEmail("");
+                }}
+                disabled={connecting}
+                className="mt-4 bg-gradient-success shadow-soft"
+              >
+                {connecting ? "מחבר..." : "חבר יועץ"}
+              </Button>
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Card className="border-border/60 p-6 shadow-soft">
         <h3 className="font-semibold">קטגוריות זמינות</h3>
