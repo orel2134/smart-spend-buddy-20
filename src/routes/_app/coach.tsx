@@ -210,6 +210,9 @@ function CoachPage() {
     }
   };
 
+  const insight = buildProactiveInsight(data);
+  const plan = buildWeeklyPlan(data);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -217,6 +220,53 @@ function CoachPage() {
           <Sparkles className="h-6 w-6 text-primary-foreground" />
         </div>
         <div>
+          <h1 className="text-3xl font-bold tracking-tight">מאמן פיננסי AI</h1>
+          <p className="mt-1 text-sm text-muted-foreground">שאל כל שאלה — אני רואה את הנתונים שלך בזמן אמת.</p>
+        </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        {insight && (
+          <Card className={`lg:col-span-2 border-border/60 p-5 shadow-soft border-r-4 ${
+            insight.tone === "danger" ? "border-r-destructive bg-destructive/5" :
+            insight.tone === "warning" ? "border-r-warning bg-warning/5" :
+            "border-r-success bg-success/5"
+          }`}>
+            <div className="flex items-start gap-3">
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                insight.tone === "danger" ? "bg-destructive/15 text-destructive" :
+                insight.tone === "warning" ? "bg-warning/15 text-warning" :
+                "bg-success/15 text-success"
+              }`}>
+                <insight.icon className="h-5 w-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-medium text-muted-foreground mb-1">תובנה פרואקטיבית</div>
+                <div className="font-bold">{insight.title}</div>
+                <p className="mt-1 text-sm text-muted-foreground">{insight.body}</p>
+                <Button size="sm" onClick={() => send(insight.cta)} className="mt-3 bg-gradient-primary gap-1">
+                  <Sparkles className="h-3.5 w-3.5" /> {insight.cta}
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
+        <Card className="border-border/60 p-5 shadow-soft">
+          <div className="flex items-center gap-2 mb-3">
+            <Target className="h-4 w-4 text-primary" />
+            <div className="font-bold text-sm">תוכנית פעולה לשבוע</div>
+          </div>
+          <ul className="space-y-2 text-sm">
+            {plan.map((p, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <CheckCircle2 className="h-4 w-4 text-success shrink-0 mt-0.5" />
+                <span>{p}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </div>
+
           <h1 className="text-3xl font-bold tracking-tight">מאמן פיננסי AI</h1>
           <p className="mt-1 text-sm text-muted-foreground">שאל כל שאלה — אני רואה את הנתונים שלך בזמן אמת.</p>
         </div>
