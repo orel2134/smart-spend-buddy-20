@@ -28,7 +28,72 @@ const SUGGESTIONS = [
   "הסבר לי את ההתראות",
   "איך לשפר את הציון הפיננסי שלי?",
   "מה תחזית סוף החודש?",
+  "איפה אני מבזבז הכי הרבה?",
+  "תן לי 3 טיפים לשבוע הבא",
 ];
+
+function buildProactiveInsight(data: ReturnType<typeof useExpenses>) {
+  const { expenses, budgets } = data;
+  if (expenses.length === 0) return null;
+  const current = filterByMonth(expenses);
+  const prev = filterPrevMonth(expenses);
+  const forecast = forecastMonth(expenses, budgets);
+  const anomalies = categoryAnomalies(expenses);
+  const health = financialHealthScore(expenses, budgets);
+  const mom = monthOverMonthChange(sumAmount(current), sumAmount(prev));
+  const top = biggestCategory(current);
+
+  if (anomalies.length > 0) {
+    const a = anomalies[0];
+    return {
+      tone: "warning" as const,
+      icon: AlertTriangle,
+      title: `זיהינו עלייה חריגה בקטגוריית ${a.label}`,
+      body: `ההוצאות שלך ב${a.label} עלו ב-${a.delta}% מהממוצע של החודשים האחרונים. כדאי לבדוק את זה.`,
+      cta: `נתח לי את הקטגוריה ${a.label}`,
+    };
+  }
+  if (forecast.willOverBudget && forecast.budget) {
+    return {
+      tone: "danger" as const,
+      icon: AlertTriangle,
+      title: "צפויה חריגה מהתקציב החודשי",
+      body: `לפי הקצב הנוכחי, תסיים את החודש עם ${formatCurrency(forecast.projectedTotal)} מתוך תקציב ${formatCurrency(forecast.budget)}. חריגה צפויה של ${formatCurrency(forecast.projectedTotal - forecast.budget)}.`,
+      cta: "בנה לי תוכנית להישאר בתקציב",
+    };
+  }
+  if (mom > 15) {
+    return {
+      tone: "warning" as const,
+      icon: TrendingUp,
+      title: `החודש אתה מוציא ${mom}% יותר מהחודש הקודם`,
+      body: top ? `הקטגוריה הבולטת היא ${top.label} עם ${formatCurrency(top.amount)}.` : "כדאי לבדוק לאן הולך הכסף.",
+      cta: "מה הסיבה לעלייה?",
+    };
+  }
+  return {
+    tone: "good" as const,
+    icon: CheckCircle2,
+    title: `אתה במצב טוב — ציון ${health.score}/100`,
+    body: forecast.budget ? `התחזית: ${formatCurrency(forecast.projectedTotal)} מתוך ${formatCurrency(forecast.budget)}. המשך כך!` : "המשך לעקוב כדי לשמור על המגמה החיובית.",
+    cta: "איך לשפר עוד את הציון?",
+  };
+}
+
+function buildWeeklyPlan(data: ReturnType<typeof useExpenses>): string[] {
+  const { expenses, budgets } = data;
+  if (expenses.length === 0) return ["הזן הוצאות מהשבוע האחרון", "הגדר תקציב חודשי", "בחר 1-2 קטגוריות לעקוב אחריהן"];
+  const usage = budgetUsage(budgets, filterByMonth(expenses));
+  const overrun = usage.find((u) => u.percent > 80);
+  const top = biggestCategory(filterByMonth(expenses));
+  const plan: string[] = [];
+  if (overrun) plan.push(`הפחת הוצאות ב${overrun.label} — נשארו לך ${formatCurrency(Math.max(0, overrun.budget - overrun.spent))} להחודש`);
+  if (top) plan.push(`עקוב אחר ${top.label} — הקטגוריה הגדולה ביותר החודש`);
+  plan.push("רשום כל הוצאה מעל ₪50 — להעלות מודעות");
+  plan.push("בדוק מנויים פעילים — בטל מה שלא בשימוש");
+  return plan.slice(0, 4);
+}
+
 
 function buildContext(data: ReturnType<typeof useExpenses>): string {
   const { expenses, budgets } = data;
